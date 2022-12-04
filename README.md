@@ -31,3 +31,22 @@ select the /camera/depth/image_raw topic to visualize the depth image
 ![Screenshot from 2022-12-04 11-49-53](https://user-images.githubusercontent.com/65026915/205477414-4df46310-0e48-4874-92d3-bdfc1d72374f.png)
 
 Here, the image shows the depth image indicating the distances of the objects infront of camera
+
+
+The pkg_moveit_manipulator package includes the moveit configuration of the urdf file
+
+For the demo of robotic arm simulation:
+roslaunch pkg_moveit_manipulator demo.launch
+
+It opens up a Rviz window where you can use MotionPlanning tab to plan the motion of the Arm and the Gripper as well..
+
+Choose a Goal State and click on Plan & Execute button to execute the path planning for Arm
+
+[Screencast from 04-12-22 11:58:36 AM IST.webm](https://user-images.githubusercontent.com/65026915/205477933-85813293-7c0e-4b14-8053-b1c7f9b81f07.webm)
+
+Similarly for the Gripper Group 
+First change the Planning group from Arm to Gripper and then Choose a Goal State and click on Plan & Execute button to execute the path planning for Gripper
+
+[Screencast from 04-12-22 12:00:28 PM IST.webm](https://user-images.githubusercontent.com/65026915/205477970-dbcd9c3e-6226-4451-8a0e-dd0d72282f91.webm)
+
+
