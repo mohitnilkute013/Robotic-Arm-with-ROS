@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- <arg default="$(find manipulator_description)/urdf/manipulator.xacro" name="model"/> -->
+
+    <param name="robot_description" command="$(find xacro)/xacro $(find manipulator_description)/urdf/manipulator.xacro"/>
+
+    <!-- Combine Joint values -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- Send Joint Values -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+        <param name="use_gui" value="True"/>
+    </node>
+
+    <!-- Show in rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find manipulator_description)/rviz/config.rviz" />
+
+</launch>

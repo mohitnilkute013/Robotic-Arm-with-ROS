@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<launch>
+
+    <group ns="/manipulator">
+
+        <!-- Robot Model -->
+        <param name="robot_description" command="$(find xacro)/xacro $(find manipulator_description)/urdf/manipulator.xacro"/>
+        <arg name="x" default="0.0"/>
+        <arg name="y" default="0.0"/>
+        <arg name="z" default="0.25"/>
+
+        <!-- Spawn Robot Model -->
+        <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" output="screen"
+            args="-urdf -param robot_description -model manipulator -x $(arg x) -y $(arg y) -z $(arg z)"/>
+
+        <!-- <node name="gazebo" pkg="gazebo_ros" type="gazebo" output="screen" /> -->
+
+        <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+	    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/> -->
+
+        <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch">
+            <arg name="paused" value="false"/>
+            <arg name="use_sim_time" value="true"/>
+            <arg name="gui" value="true"/>
+            <arg name="headless" value="false"/>
+            <arg name="debug" value="false"/>
+        </include> -->
+
+        <!-- Load controllers -->
+        <rosparam command="load" file="$(find manipulator_description)/config/joints.yaml" />
+
+        <!-- Controllers -->
+        <node name="controller_spawner" pkg="controller_manager" type="spawner"
+            respawn="false" output="screen" ns="/manipulator"
+            args="--namespace=/manipulator
+            joint_state_controller
+            joint1_position_controller
+            joint2_position_controller
+            joint3_position_controller
+            joint4_position_controller
+            joint5_position_controller
+            joint6_position_controller
+            
+            --timeout 60">
+        </node>
+
+        <!-- rqt -->
+        <!-- <node name="rqt_reconfigure" pkg="rqt_reconfigure" type="rqt_reconfigure" />
+        <node name="rqt_publisher" pkg="rqt_publisher" type="rqt_publisher" /> -->
+             
+    </group>
+    
+</launch>
+

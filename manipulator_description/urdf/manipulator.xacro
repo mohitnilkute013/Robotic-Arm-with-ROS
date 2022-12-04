@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+
+<robot name="manipulator" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find manipulator_description)/urdf/materials.xacro" />
+	<xacro:include filename="$(find manipulator_description)/urdf/links_joints_macro.xacro" />
+	<xacro:include filename="$(find manipulator_description)/urdf/robot_parameters.xacro" />
+	<xacro:include filename="$(find manipulator_description)/urdf/manipulator_plugin.xacro" />
+
+
+    <xacro:link_box name="${bl}" origin_rpy="0 0 0" origin_xyz="0 0 0" size="2 2 0.5"
+                mass="5.0" ixx="7.0833" iyy="7.0833" izz="13.3333" ixy="-5.0" iyz="-1.25" ixz="-1.25" />
+    <xacro:m_joint name="${bl}__${l01}" type="revolute"
+                axis_xyz="0 0 1"
+                limit_e="100.0" limit_l="-3.14" limit_u="3.14" limit_v="0.5"
+                origin_rpy="0 0 0" origin_xyz="0 0 0.25"
+                parent="${bl}" child="${l01}" />
+
+    <xacro:link_box name="${l01}" origin_rpy="0 0 0" origin_xyz="0 0 0.2" size="0.1 0.1 0.4"
+                mass="0.02" ixx="0.001133" iyy="0.001133" izz="0.0001333" ixy="-0.00005" iyz="-0.0002" ixz="-0.0002" />
+
+    <xacro:m_joint name="${l01}__${l02}" type="revolute"
+                axis_xyz="1 0 0"
+                limit_e="100.0" limit_l="-3.14" limit_u="3.14" limit_v="0.5"
+                origin_rpy="0 0 0" origin_xyz="0.05 0 0.4"
+                parent="${l01}" child="${l02}" />
+
+    <xacro:link_box name="${l02}" origin_rpy="0 0 0" origin_xyz="0.05 0 0.3" size="0.1 0.1 0.6"
+                mass="0.03" ixx="0.0037" iyy="0.0037" izz="0.0002" ixy="-0.000075" iyz="-0.00045" ixz="-0.00045" />
+
+    <xacro:m_joint name="${l02}__${l03}" type="revolute"
+                axis_xyz="1 0 0"
+                limit_e="100.0" limit_l="-3.14" limit_u="3.14" limit_v="0.5"
+                origin_rpy="0 0 0" origin_xyz="0 0 0.6"
+                parent="${l02}" child="${l03}" />
+
+    <xacro:link_box name="${l03}" origin_rpy="0 0 0" origin_xyz="-0.05 0 0.25" size="0.1 0.1 0.5"
+                mass="0.025" ixx="0.00216" iyy="0.00216" izz="0.000166" ixy="-0.0000625" iyz="-0.0003125" ixz="-0.0003125" />
+    
+    <xacro:m_joint name="${l03}__${l04}" type="revolute"
+                axis_xyz="0 0 1"
+                limit_e="100.0" limit_l="-3.14" limit_u="3.14" limit_v="0.5"
+                origin_rpy="0 0 0" origin_xyz="-0.05 0 0.5"
+                parent="${l03}" child="${l04}" />
+
+    <xacro:link_box name="${l04}" origin_rpy="0 0 0" origin_xyz="0 0 0.05" size="0.1 0.1 0.1"
+                mass="0.005" ixx="0.0000333" iyy="0.0000333" izz="0.0000333" ixy="-0.0000125" iyz="-0.0000125" ixz="-0.0000125" />
+    
+    <!-- Two plate Gripper -->
+    <xacro:m_joint name="${l04}__${gll}" type="prismatic"
+                axis_xyz="1 0 0"
+                limit_e="100.0" limit_l="-0.05" limit_u="0" limit_v="0.5"
+                origin_rpy="0 0 0" origin_xyz="0.05 0 0.1"
+                parent="${l04}" child="${gll}" />
+
+    <xacro:link_box name="${gll}" origin_rpy="0 0 0" origin_xyz="0.01 0 0.07" size="0.02 0.1 0.14"
+                mass="0.0014" ixx="0.0000138" iyy="0.00000933" izz="0.000004853" ixy="-0.0000007" iyz="-0.0000049" ixz="-0.00000392" />
+
+    <xacro:m_joint name="${l04}__${glr}" type="prismatic"
+                axis_xyz="1 0 0"
+                limit_e="100.0" limit_l="0" limit_u="0.05" limit_v="0.5"
+                origin_rpy="0 0 0" origin_xyz="-0.05 0 0.1"
+                parent="${l04}" child="${glr}" />
+
+    <xacro:link_box name="${glr}" origin_rpy="0 0 0" origin_xyz="-0.01 0 0.07" size="0.02 0.1 0.14"
+                mass="0.0014" ixx="0.0000138" iyy="0.00000933" izz="0.000004853" ixy="-0.0000007" iyz="-0.0000049" ixz="-0.00000392" />
+
+</robot>

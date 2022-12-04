@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<robot>
+
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/manipulator</robotNamespace>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        </plugin>
+    </gazebo>
+
+    <!-- <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/open_manipulator</robotNamespace>
+            <controlPeriod>0.001</controlPeriod>
+            <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+            <legacyModeNS>true</legacyModeNS>
+        </plugin> 
+    </gazebo> -->
+
+
+    <!-- Camera Joints and Frame links -->
+    <joint name="intelrealsense" type="fixed">
+        <axis xyz="0 0 0" />
+        <origin xyz="0 0.2 0.3" rpy="0 0 1.57"/>
+        <parent link="base_link"/>
+        <child link="camera_link"/>
+    </joint>
+    <link name="camera_link">
+        <collision>
+            <origin xyz="0.02 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="1.5707 0 1.5707"/>
+            <geometry>
+                <mesh filename="package://manipulator_description/meshes/NAVRS.STL" />
+            </geometry>
+        </visual>
+
+        <inertial>
+            <mass value="1e-5" />
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0" />
+        </inertial>
+    </link>
+
+
+
+    <joint name="camera_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+        <parent link="camera_link"/>
+        <child link="camera_rgb_frame"/>
+    </joint>
+
+    <link name="camera_rgb_frame">
+    </link>
+
+    <joint name="camera_depth_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+        <parent link="camera_link"/>
+        <child link="camera_depth_frame"/>
+    </joint>
+
+    <link name="camera_depth_frame">
+    </link>
+
+    <!-- intel realsense depth camera -->
+    <gazebo reference="camera_link">
+        <sensor type="depth" name="intelrealsenseD435i">
+            <material>Gazebo/Red</material>
+            <always_on>1</always_on>
+            <visualize>true</visualize>
+            <camera>
+                <horizontal_fov>1.047</horizontal_fov>
+                <image>
+                    <width>640</width>
+                    <height>480</height>
+                    <format>R8G8B8</format>
+                </image>
+                <depth_camera>
+
+                </depth_camera>
+                <clip>
+                    <near>0.1</near>
+                    <far>100</far>
+                </clip>
+            </camera>
+            <plugin name="intelrealsense" filename="libgazebo_ros_openni_kinect.so">
+                <alwaysOn>true</alwaysOn>
+                <updateRate>10.0</updateRate>
+                <cameraName>camera</cameraName>
+                <frameName>camera_depth_frame</frameName>
+                <imageTopicName>/camera/color/image_raw</imageTopicName>
+                <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
+                <pointCloudTopicName>depth/points</pointCloudTopicName>
+                <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
+                <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
+                <pointCloudCutoff>0.2</pointCloudCutoff>
+                <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+                <hackBaseline>0.07</hackBaseline>
+                <distortionK1>0.0</distortionK1>
+                <distortionK2>0.0</distortionK2>
+                <distortionK3>0.0</distortionK3>
+                <distortionT1>0.0</distortionT1>
+                <distortionT2>0.0</distortionT2>
+                <CxPrime>0.0</CxPrime>
+                <Cx>0.0</Cx>
+                <Cy>0.0</Cy>
+                <focalLength>0.0</focalLength>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</robot>
